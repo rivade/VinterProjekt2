@@ -24,8 +24,8 @@ public class GameState
 
     private void Draw()
     {
-        Raylib.ClearBackground(Color.WHITE);
         Raylib.BeginDrawing();
+        Raylib.ClearBackground(Color.WHITE);
         p.DrawCharacter();
         currentLevel.DrawLevel();
         Raylib.EndDrawing();
