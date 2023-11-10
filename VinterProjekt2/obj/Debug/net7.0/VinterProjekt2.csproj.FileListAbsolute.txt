@@ -20,3 +20,7 @@ C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\obj\Debug\net7.0\VinterProjekt2.pdb
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\obj\Debug\net7.0\VinterProjekt2.genruntimeconfig.cache
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\obj\Debug\net7.0\ref\VinterProjekt2.dll
+C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\air.png
+C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\character.png
+C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\fall.png
+C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\running.png

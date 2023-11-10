@@ -52,11 +52,7 @@ public class Player
     //Drawing
     private int frame = 1;
     private float elapsed = 0;
-    private Texture2D[] sprites = new Texture2D[]
-    {Raylib.LoadTexture("Sprites/character.png"),
-    Raylib.LoadTexture("Sprites/running.png"),
-    Raylib.LoadTexture("Sprites/air.png"),
-    Raylib.LoadTexture("Sprites/fall.png")};
+    private Texture2D[] sprites;
     private int currentSprite { get; set; }
     private Texture2D sprite
     {
@@ -88,12 +84,12 @@ public class Player
             currentSprite = 1;
         }
 
-        else if(!isGrounded && verticalVelocity < 0)
+        else if (!isGrounded && verticalVelocity < 0)
         {
             currentSprite = 2;
         }
 
-        else if(!isGrounded && verticalVelocity > 0)
+        else if (!isGrounded && verticalVelocity > 0)
         {
             currentSprite = 3;
         }
@@ -122,5 +118,11 @@ public class Player
         isGrounded = false;
         currentSprite = 0;
         verticalVelocity = 0;
+
+        sprites = new Texture2D[]
+        {Raylib.LoadTexture("character.png"),
+        Raylib.LoadTexture("running.png"),
+        Raylib.LoadTexture("air.png"),
+        Raylib.LoadTexture("fall.png")};
     }
 }
