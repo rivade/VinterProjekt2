@@ -2,6 +2,14 @@ using Raylib_cs;
 
 public class GameState
 {
+    enum CurrentState
+    {
+        Start,
+        Game,
+        GameOver,
+        Win
+    }
+
     public const int screenWidth = 1024;
     public const int screenHeight = 768;
 
@@ -21,7 +29,7 @@ public class GameState
 
     private void Logic()
     {
-        p.Movement();
+        p.Movement(currentLevel);
     }
 
     private void Draw()

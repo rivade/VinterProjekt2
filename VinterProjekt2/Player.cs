@@ -27,14 +27,41 @@ public class Player
 
         playerRect.y += verticalVelocity;
     }
-    private void CheckCollisions()
+    private void CheckCollisions(Level l) //Måste fixa så att den kollar kollisioner på rectens högra sida också, just nu kollas kolissioner endast vid vänsterbottenhörnet.
     {
+        int playerBlockX = (int)(playerRect.x / Level.blockWidth);
+        int playerBlockY = (int)((playerRect.y + playerRect.height) / Level.blockHeight);
+
+        isGrounded = false;
+        for (int offset = 0; offset < 2; offset++)
+        {
+
+            if (isGrounded) break;
+
+            playerBlockX += (int)playerRect.width * offset;
+
+            if (playerBlockX >= 0 && playerBlockX < l.layout.GetLength(1) && playerBlockY >= 0 && playerBlockY < l.layout.GetLength(0))
+            {
+                int blockType = l.layout[playerBlockY, playerBlockX];
+
+                switch (blockType)
+                {
+                    case 0:
+                        isGrounded = false;
+                        break;
+                    case 1:
+                        isGrounded = true;
+                        playerRect.y = playerBlockY * Level.blockHeight - playerRect.height;
+                        break;
+                }
+            }
+        }
         Gravity();
     }
 
-    public void Movement()
+    public void Movement(Level level)
     {
-        CheckCollisions();
+        CheckCollisions(level);
         if (Raylib.IsKeyDown(KeyboardKey.KEY_D) || Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT))
         {
             direction = 1;
@@ -110,6 +137,7 @@ public class Player
             sourceRec.x = frame * sourceRec.width;
         }
         Raylib.DrawTextureRec(sprite, sourceRec, new Vector2(playerRect.x, playerRect.y), Color.WHITE);
+        Raylib.DrawRectangle((int)playerRect.x, (int)playerRect.y, (int)playerRect.width, (int)playerRect.height, Color.RED);
     }
 
     public Player()
