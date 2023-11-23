@@ -5,13 +5,16 @@ public class Player
 {
     //Logic
     public Rectangle playerRect = new(0, 0, 50, 75);
-    private int direction;
     private bool isGrounded;
+    public bool canJump;
+    private int direction;
     private float verticalVelocity;
+    private Vector2 lastPosition;
+    private CoyoteTimer coyoteTimer;
 
     private void Gravity()
     {
-        if ((Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) || Raylib.IsKeyPressed(KeyboardKey.KEY_UP)) && isGrounded)
+        if ((Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) || Raylib.IsKeyPressed(KeyboardKey.KEY_UP)) && canJump)
         {
             verticalVelocity = -10;
         }
@@ -27,18 +30,18 @@ public class Player
 
         playerRect.y += verticalVelocity;
     }
-    private void CheckCollisions(Level l) //Måste fixa så att den kollar kollisioner på rectens högra sida också, just nu kollas kolissioner endast vid vänsterbottenhörnet.
+    private void CheckGroundCollisions(Level l)
     {
         int playerBlockX = (int)(playerRect.x / Level.blockWidth);
         int playerBlockY = (int)((playerRect.y + playerRect.height) / Level.blockHeight);
 
         isGrounded = false;
-        for (int offset = 0; offset < 2; offset++)
-        {
 
+        for (int offset = 0; offset < 2; offset++) //Kör koden 2 gånger så den kollar kollisioner på båda sidorna av spelaren
+        {
             if (isGrounded) break;
 
-            playerBlockX += (int)playerRect.width * offset;
+            playerBlockX = (int)((playerRect.x + (playerRect.width * offset)) / Level.blockWidth); //Avgör plats för koll av kollision
 
             if (playerBlockX >= 0 && playerBlockX < l.layout.GetLength(1) && playerBlockY >= 0 && playerBlockY < l.layout.GetLength(0))
             {
@@ -48,20 +51,28 @@ public class Player
                 {
                     case 0:
                         isGrounded = false;
+                        canJump = false;
                         break;
-                    case 1:
+                    case 3:
+                        Game.currentState = Game.State.GameOver;
+                        break;
+                    default:
                         isGrounded = true;
+                        canJump = true;
                         playerRect.y = playerBlockY * Level.blockHeight - playerRect.height;
                         break;
+
                 }
             }
         }
-        Gravity();
+    }
+    private bool GetWallCollide(Level l)
+    {
+        return l.walls.Any(wallTile => Raylib.CheckCollisionRecs(playerRect, wallTile));
     }
 
     public void Movement(Level level)
     {
-        CheckCollisions(level);
         if (Raylib.IsKeyDown(KeyboardKey.KEY_D) || Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT))
         {
             direction = 1;
@@ -72,7 +83,19 @@ public class Player
             direction = -1;
             playerRect.x -= 5;
         }
+
+        if (GetWallCollide(level))
+        {
+            playerRect.x = lastPosition.X;
+            coyoteTimer.StartTimer();
+        }
+
+        Gravity();
+        CheckGroundCollisions(level);
+
+        lastPosition.X = playerRect.x;
     }
+
 
 
 
@@ -103,10 +126,10 @@ public class Player
 
         frame %= 12;
     }
-    private void SpriteSelector()
+    private void SpriteSelector(Level level)
     {
         if ((Raylib.IsKeyDown(KeyboardKey.KEY_D) || Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT) ||
-             Raylib.IsKeyDown(KeyboardKey.KEY_A) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT)) && isGrounded)
+             Raylib.IsKeyDown(KeyboardKey.KEY_A) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT)) && isGrounded && !GetWallCollide(level))
         {
             currentSprite = 1;
         }
@@ -121,15 +144,20 @@ public class Player
             currentSprite = 3;
         }
 
+        else if (GetWallCollide(level))
+        {
+            currentSprite = 4;
+        }
+
         else
         {
             currentSprite = 0;
         }
     }
 
-    public void DrawCharacter()
+    public void DrawCharacter(Level level)
     {
-        SpriteSelector();
+        SpriteSelector(level);
         Rectangle sourceRec = new Rectangle(0, 0, 50 * direction, 75);
         if (currentSprite == 1)
         {
@@ -137,20 +165,23 @@ public class Player
             sourceRec.x = frame * sourceRec.width;
         }
         Raylib.DrawTextureRec(sprite, sourceRec, new Vector2(playerRect.x, playerRect.y), Color.WHITE);
-        Raylib.DrawRectangle((int)playerRect.x, (int)playerRect.y, (int)playerRect.width, (int)playerRect.height, Color.RED);
     }
 
+
+    //Constructor
     public Player()
     {
         direction = 1;
         isGrounded = false;
         currentSprite = 0;
         verticalVelocity = 0;
-
+        coyoteTimer = new CoyoteTimer(this);
+        
         sprites = new Texture2D[]
         {Raylib.LoadTexture("character.png"),
         Raylib.LoadTexture("running.png"),
         Raylib.LoadTexture("air.png"),
-        Raylib.LoadTexture("fall.png")};
+        Raylib.LoadTexture("fall.png"),
+        Raylib.LoadTexture("onwall.png")};
     }
 }

@@ -1,42 +1,45 @@
+using System.Diagnostics.Contracts;
 using Raylib_cs;
 
-public class GameState
+public class Game
 {
-    enum CurrentState
+    public enum State
     {
         Start,
         Game,
         GameOver,
         Win
     }
+    public static State currentState;
 
-    public const int screenWidth = 1024;
-    public const int screenHeight = 768;
+    public const int screenWidth = 1008;
+    public const int screenHeight = 756;
 
     private Player p;
     private Level currentLevel;
     private LevelOne l1 = new();
     private LevelTwo l2 = new();
 
-    public GameState()
+    public Game()
     {
-        Raylib.InitWindow(GameState.screenWidth, GameState.screenHeight, "mongo");
+        Raylib.InitWindow(Game.screenWidth, Game.screenHeight, "mongo");
         Raylib.SetTargetFPS(60);
+        currentState = State.Game;
         currentLevel = l1;
 
         p = new Player();
     }
 
-    private void Logic()
+    private void GameLogic()
     {
         p.Movement(currentLevel);
     }
 
-    private void Draw()
+    private void DrawGame()
     {
         Raylib.BeginDrawing();
         Raylib.ClearBackground(Color.WHITE);
-        p.DrawCharacter();
+        p.DrawCharacter(currentLevel);
         currentLevel.DrawLevel();
         Raylib.EndDrawing();
     }
@@ -45,9 +48,25 @@ public class GameState
     {
         while (!Raylib.WindowShouldClose())
         {
-            Logic();
-            Draw();
-            System.Console.WriteLine($"{p.playerRect.x}, {p.playerRect.y}");
+            switch (currentState)
+            {
+                case State.Start:
+
+                    break;
+                
+                case State.Game:
+                    GameLogic();
+                    DrawGame();
+                    break;
+
+                case State.GameOver:
+                    
+                    break;
+                
+                case State.Win:
+
+                    break;
+            }
         }
     }
 }
