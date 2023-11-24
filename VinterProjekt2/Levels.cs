@@ -3,8 +3,8 @@ using Raylib_cs;
 
 public class Level
 {
-    public const int blockWidth = Game.screenWidth / 12;
-    public const int blockHeight = Game.screenHeight / 9;
+    public const int blockWidth = GameManager.screenWidth / 12;
+    public const int blockHeight = GameManager.screenHeight / 9;
 
     public int[,] layout;
     public List<Rectangle> walls = new();

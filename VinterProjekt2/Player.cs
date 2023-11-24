@@ -10,15 +10,15 @@ public class Player
     private int direction;
     private float verticalVelocity;
     private Vector2 lastPosition;
-    private CoyoteTimer coyoteTimer;
+    private JumpTimer jumpTimer;
 
-    private void Gravity()
+    private void Gravity(Level l)
     {
         if ((Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) || Raylib.IsKeyPressed(KeyboardKey.KEY_UP)) && canJump)
         {
             verticalVelocity = -10;
         }
-        else if (isGrounded)
+        else if (isGrounded || GetWallCollide(l))
         {
             verticalVelocity = 0;
         }
@@ -54,7 +54,8 @@ public class Player
                         canJump = false;
                         break;
                     case 3:
-                        Game.currentState = Game.State.GameOver;
+                        GameManager.currentState = GameManager.State.UIscreen;
+                        GameManager.ChangeUI(2);
                         break;
                     default:
                         isGrounded = true;
@@ -87,10 +88,10 @@ public class Player
         if (GetWallCollide(level))
         {
             playerRect.x = lastPosition.X;
-            coyoteTimer.StartTimer();
+            jumpTimer.StartTimer();
         }
 
-        Gravity();
+        Gravity(level);
         CheckGroundCollisions(level);
 
         lastPosition.X = playerRect.x;
@@ -103,7 +104,7 @@ public class Player
     private int frame = 1;
     private float elapsed = 0;
     private Texture2D[] sprites;
-    private int currentSprite { get; set; }
+    public int currentSprite { get; set; }
     private Texture2D sprite
     {
         get
@@ -143,12 +144,6 @@ public class Player
         {
             currentSprite = 3;
         }
-
-        else if (GetWallCollide(level))
-        {
-            currentSprite = 4;
-        }
-
         else
         {
             currentSprite = 0;
@@ -175,13 +170,12 @@ public class Player
         isGrounded = false;
         currentSprite = 0;
         verticalVelocity = 0;
-        coyoteTimer = new CoyoteTimer(this);
+        jumpTimer = new JumpTimer(this);
         
         sprites = new Texture2D[]
         {Raylib.LoadTexture("character.png"),
         Raylib.LoadTexture("running.png"),
         Raylib.LoadTexture("air.png"),
-        Raylib.LoadTexture("fall.png"),
-        Raylib.LoadTexture("onwall.png")};
+        Raylib.LoadTexture("fall.png")};
     }
 }

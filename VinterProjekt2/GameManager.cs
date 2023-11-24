@@ -1,14 +1,12 @@
 using System.Diagnostics.Contracts;
 using Raylib_cs;
 
-public class Game
+public class GameManager
 {
     public enum State
     {
-        Start,
         Game,
-        GameOver,
-        Win
+        UIscreen
     }
     public static State currentState;
 
@@ -16,18 +14,41 @@ public class Game
     public const int screenHeight = 756;
 
     private Player p;
+    private static UIscreen currentUI;
+    private static StartScreen startScreen = new();
+    private static GameOverScreen gameOverScreen = new();
+    private static WinScreen winScreen = new();
     private Level currentLevel;
     private LevelOne l1 = new();
     private LevelTwo l2 = new();
 
-    public Game()
+    public GameManager()
     {
-        Raylib.InitWindow(Game.screenWidth, Game.screenHeight, "mongo");
+        Raylib.InitWindow(screenWidth, screenHeight, "mongo");
         Raylib.SetTargetFPS(60);
-        currentState = State.Game;
+        currentState = State.UIscreen;
+        currentUI = startScreen;
         currentLevel = l1;
 
         p = new Player();
+    }
+
+    public static void ChangeUI (int uiSelector)
+    {
+        switch (uiSelector)
+        {
+            case 1:
+                currentUI = startScreen;
+                break;
+            
+            case 2:
+                currentUI = gameOverScreen;
+                break;
+            
+            case 3:
+                currentUI = winScreen;
+                break;
+        }
     }
 
     private void GameLogic()
@@ -50,21 +71,13 @@ public class Game
         {
             switch (currentState)
             {
-                case State.Start:
-
+                case State.UIscreen:
+                    currentUI.Logic();
+                    currentUI.Draw();
                     break;
-                
                 case State.Game:
                     GameLogic();
                     DrawGame();
-                    break;
-
-                case State.GameOver:
-                    
-                    break;
-                
-                case State.Win:
-
                     break;
             }
         }

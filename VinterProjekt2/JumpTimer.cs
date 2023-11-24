@@ -1,12 +1,12 @@
 using System.Threading;
 using System.Diagnostics;
 
-public class CoyoteTimer
+public class JumpTimer
 {
     private Player player;
     public Thread timerThread;
 
-    public CoyoteTimer(Player inPlayer)
+    public JumpTimer(Player inPlayer)
     {
         player = inPlayer;
     }
