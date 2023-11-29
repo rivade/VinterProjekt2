@@ -19,9 +19,28 @@ public class GameManager
     private static StartScreen startScreen = new();
     private static GameOverScreen gameOverScreen = new();
     private static WinScreen winScreen = new();
-    private Level currentLevel;
+    private Level currentLevel
+    {
+        get 
+        {
+            return levels[levelInt];
+        }
+    }
     private LevelOne l1;
     private LevelTwo l2;
+    private Level[] levels;
+    private int levelInt
+    {
+        get
+        {
+            return levelInt;
+        }
+        set
+        {
+            if (value > levels.Length)
+            value = levels.Length;
+        }
+    }
 
 
 
@@ -32,9 +51,9 @@ public class GameManager
         currentState = State.UIscreen;
         currentUI = startScreen;
 
-        l1 = new(l2);
-        l2 = new(null);
-        currentLevel = l1;
+        l1 = new();
+        l2 = new();
+        levels = new Level[] { l1, l2 };
 
         p = new Player();
     }
@@ -64,7 +83,7 @@ public class GameManager
         {
             p.playerRect.x = 0;
             p.playerRect.y = 0;
-            currentLevel = currentLevel.nextLevel;
+            levelInt++;
         }
     }
 

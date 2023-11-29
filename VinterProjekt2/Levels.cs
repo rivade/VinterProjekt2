@@ -9,8 +9,6 @@ public class Level
     public int[,] layout;
     public List<Rectangle> walls = new();
     private Rectangle goal;
-    public Level nextLevel;
-
 
     public virtual void DrawLevel()
     {
@@ -68,9 +66,8 @@ public class Level
 
 public class LevelOne : Level
 {
-    public LevelOne(Level nxtLvl)
+    public LevelOne()
     {
-        nextLevel = nxtLvl;
         layout = new int[,]
         {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -89,9 +86,8 @@ public class LevelOne : Level
 
 public class LevelTwo : Level
 {
-     public LevelTwo(Level nxtLvl)
+     public LevelTwo()
     {
-        nextLevel = nxtLvl;
         layout = new int[,]
         {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
