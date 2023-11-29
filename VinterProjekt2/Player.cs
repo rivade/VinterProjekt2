@@ -57,6 +57,10 @@ public class Player
                         GameManager.currentState = GameManager.State.UIscreen;
                         GameManager.ChangeUI(2);
                         break;
+                    case 4:
+                        isGrounded = false;
+                        canJump = false;
+                        break;
                     default:
                         isGrounded = true;
                         canJump = true;

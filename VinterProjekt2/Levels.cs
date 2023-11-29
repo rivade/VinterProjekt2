@@ -3,11 +3,14 @@ using Raylib_cs;
 
 public class Level
 {
-    public const int blockWidth = GameManager.screenWidth / 12;
+    public const int blockWidth = GameManager.screenWidth / 14;
     public const int blockHeight = GameManager.screenHeight / 9;
 
     public int[,] layout;
     public List<Rectangle> walls = new();
+    private Rectangle goal;
+    public Level nextLevel;
+
 
     public virtual void DrawLevel()
     {
@@ -27,6 +30,9 @@ public class Level
                     case 3:
                         Raylib.DrawRectangle(x * blockWidth, y * blockHeight, blockWidth, blockHeight, Color.RED);
                         break;
+                    case 4:
+                        Raylib.DrawRectangle(x * blockWidth, y * blockHeight, blockWidth, blockHeight, Color.GREEN);
+                        break;
 
                 }
             }
@@ -34,41 +40,70 @@ public class Level
 
     }
 
-    public void GenerateWalls()
+    public void GenerateWallsGoal()
     {
         for (int y = 0; y < layout.GetLength(0); y++)
         {
             for (int x = 0; x < layout.GetLength(1); x++)
             {
-                if (layout[y, x] == 2)
-                walls.Add(new Rectangle(x * blockWidth, y * blockHeight, blockWidth, blockHeight));
+                switch (layout[y, x])
+                {
+                    case 2:
+                        walls.Add(new Rectangle(x * blockWidth, y * blockHeight, blockWidth, blockHeight));
+                        break;
+                    case 4:
+                        goal = new Rectangle(x * blockWidth, y * blockHeight, blockWidth, blockHeight);
+                        break;
+                }
+
             }
         }
+    }
+
+    public bool WinCheck(Player p)
+    {
+        return Raylib.CheckCollisionRecs(p.playerRect, goal);
     }
 }
 
 public class LevelOne : Level
 {
-    public LevelOne()
+    public LevelOne(Level nxtLvl)
     {
+        nextLevel = nxtLvl;
         layout = new int[,]
         {
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0},
-            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0},
-            {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0},
-            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0},
-            {1, 1, 1, 1, 3, 3, 3, 3, 1, 1, 1, 1}
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 2, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3},
+            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0},
+            {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0},
+            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 4},
+            {1, 1, 1, 1, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3}
         };
-
-        GenerateWalls();
+        GenerateWallsGoal();
     }
 }
 
 public class LevelTwo : Level
 {
-
+     public LevelTwo(Level nxtLvl)
+    {
+        nextLevel = nxtLvl;
+        layout = new int[,]
+        {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 2, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3},
+            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0},
+            {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {2, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0},
+            {2, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 4},
+            {1, 1, 1, 1, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3}
+        };
+        GenerateWallsGoal();
+    }
 }

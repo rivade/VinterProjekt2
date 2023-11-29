@@ -1,4 +1,5 @@
 using System.Diagnostics.Contracts;
+using System.Numerics;
 using Raylib_cs;
 
 public class GameManager
@@ -19,8 +20,10 @@ public class GameManager
     private static GameOverScreen gameOverScreen = new();
     private static WinScreen winScreen = new();
     private Level currentLevel;
-    private LevelOne l1 = new();
-    private LevelTwo l2 = new();
+    private LevelOne l1;
+    private LevelTwo l2;
+
+
 
     public GameManager()
     {
@@ -28,23 +31,26 @@ public class GameManager
         Raylib.SetTargetFPS(60);
         currentState = State.UIscreen;
         currentUI = startScreen;
+
+        l1 = new(l2);
+        l2 = new(null);
         currentLevel = l1;
 
         p = new Player();
     }
 
-    public static void ChangeUI (int uiSelector)
+    public static void ChangeUI(int uiSelector)
     {
         switch (uiSelector)
         {
             case 1:
                 currentUI = startScreen;
                 break;
-            
+
             case 2:
                 currentUI = gameOverScreen;
                 break;
-            
+
             case 3:
                 currentUI = winScreen;
                 break;
@@ -54,6 +60,12 @@ public class GameManager
     private void GameLogic()
     {
         p.Movement(currentLevel);
+        if (currentLevel.WinCheck(p))
+        {
+            p.playerRect.x = 0;
+            p.playerRect.y = 0;
+            currentLevel = currentLevel.nextLevel;
+        }
     }
 
     private void DrawGame()
