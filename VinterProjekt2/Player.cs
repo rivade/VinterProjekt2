@@ -10,7 +10,6 @@ public class Player
     private int direction;
     private float verticalVelocity;
     private Vector2 lastPosition;
-    private JumpTimer jumpTimer;
 
     private void Gravity(Level l)
     {
@@ -92,13 +91,22 @@ public class Player
         if (GetWallCollide(level))
         {
             playerRect.x = lastPosition.X;
-            jumpTimer.StartTimer();
+            canJump = true;
         }
 
         Gravity(level);
         CheckGroundCollisions(level);
 
         lastPosition.X = playerRect.x;
+    }
+
+    public void ResetCharacter()
+    {
+        direction = 1;
+        isGrounded = false;
+        currentSprite = 0;
+        verticalVelocity = 0;
+        playerRect.x = 0; playerRect.y = 0;
     }
 
 
@@ -170,11 +178,7 @@ public class Player
     //Constructor
     public Player()
     {
-        direction = 1;
-        isGrounded = false;
-        currentSprite = 0;
-        verticalVelocity = 0;
-        jumpTimer = new JumpTimer(this);
+        ResetCharacter();
         
         sprites = new Texture2D[]
         {Raylib.LoadTexture("character.png"),

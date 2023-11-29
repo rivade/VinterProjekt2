@@ -16,31 +16,30 @@ public class GameManager
 
     private Player p;
     private static UIscreen currentUI;
-    private static StartScreen startScreen = new();
-    private static GameOverScreen gameOverScreen = new();
-    private static WinScreen winScreen = new();
+    private static StartScreen startScreen;
+    private static GameOverScreen gameOverScreen;
+    private static WinScreen winScreen;
     private Level currentLevel
     {
         get 
         {
-            return levels[levelInt];
+            try
+            {
+                return levels[levelInt];
+            }
+            catch //Spelaren har vunnit;
+            {
+                ChangeUI(3);
+                levelInt = 0;
+                currentState = State.UIscreen;
+                return levels[levelInt];
+            }
         }
     }
     private LevelOne l1;
     private LevelTwo l2;
     private Level[] levels;
-    private int levelInt
-    {
-        get
-        {
-            return levelInt;
-        }
-        set
-        {
-            if (value > levels.Length)
-            value = levels.Length;
-        }
-    }
+    private int levelInt;
 
 
 
@@ -49,13 +48,17 @@ public class GameManager
         Raylib.InitWindow(screenWidth, screenHeight, "mongo");
         Raylib.SetTargetFPS(60);
         currentState = State.UIscreen;
+        p = new Player();
+        
+        startScreen = new();
+        gameOverScreen = new(p);
+        winScreen = new();
         currentUI = startScreen;
 
         l1 = new();
         l2 = new();
         levels = new Level[] { l1, l2 };
-
-        p = new Player();
+        levelInt = 0;
     }
 
     public static void ChangeUI(int uiSelector)
@@ -74,6 +77,14 @@ public class GameManager
                 currentUI = winScreen;
                 break;
         }
+    }
+
+    private void ResetGame()
+    {
+        levelInt = 0;
+        p.ResetCharacter();
+        ChangeUI(1);
+        currentState = State.UIscreen;
     }
 
     private void GameLogic()
