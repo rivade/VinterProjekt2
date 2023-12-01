@@ -12,7 +12,7 @@ public class UIscreen
     {
         Vector2 mouse = Raylib.GetMousePosition();
         if (Raylib.CheckCollisionPointRec(mouse, button))
-        {  
+        {
             if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
             {
                 GameManager.currentState = GameManager.State.Game;
@@ -94,7 +94,7 @@ public class WinScreen : UIscreen
     {
         Vector2 mouse = Raylib.GetMousePosition();
         if (Raylib.CheckCollisionPointRec(mouse, button))
-        {  
+        {
             if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
             {
                 GameManager.ChangeUI(1);

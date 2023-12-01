@@ -5,6 +5,9 @@ using System.Numerics;
 public class Camera
 {
     Player player;
+
+    const int playerMaxDistanceToLvlEnd = 754;
+
     public Camera(Player inPlayer)
     {
         player = inPlayer;
@@ -18,16 +21,13 @@ public class Camera
     }
     public void CameraBounds(int levelWidth) //Gör så att kameran bara följer efter spelaren efter den passerat en viss punkt vilket gör det snyggare
     {
-        if (player.playerRect.x >= 265)
-        {
+        if (player.playerRect.x >= 265 && (levelWidth - player.playerRect.x >= playerMaxDistanceToLvlEnd))
             c.target = new Vector2((player.playerRect.x + 250), (GameManager.screenHeight / 2));
-        }
-        else if ((player.playerRect.x - GameManager.screenWidth) ==) 
-        else
-        {
-            c.target = new Vector2((GameManager.screenWidth / 2), (GameManager.screenHeight / 2));
-        }
 
-        System.Console.WriteLine(player.playerRect.x);
+        else if (levelWidth - player.playerRect.x <= playerMaxDistanceToLvlEnd)
+            c.target = new Vector2((levelWidth - (GameManager.screenWidth / 2)), GameManager.screenHeight / 2);
+
+        else
+            c.target = new Vector2((GameManager.screenWidth / 2), (GameManager.screenHeight / 2));
     }
 }

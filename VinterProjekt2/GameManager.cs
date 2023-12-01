@@ -22,7 +22,7 @@ public class GameManager
     private static WinScreen winScreen;
     private Level currentLevel
     {
-        get 
+        get
         {
             try
             {
@@ -51,7 +51,7 @@ public class GameManager
         currentState = State.UIscreen;
         _player = new Player();
         _camera = new Camera(_player);
-        
+
         startScreen = new(_player);
         gameOverScreen = new(_player);
         winScreen = new();
@@ -93,7 +93,7 @@ public class GameManager
 
     private void GameLogic()
     {
-        _camera.CameraBounds((currentLevel.layout.GetLength(0) * Level.blockWidth));
+        _camera.CameraBounds((currentLevel.layout.GetLength(1) * Level.blockWidth));
         _player.Movement(currentLevel);
         _player.CheckSpikeDeath(currentLevel);
         if (currentLevel.WinCheck(_player))
