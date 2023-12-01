@@ -3,7 +3,7 @@ using System.Numerics;
 
 public class UIscreen
 {
-    protected Player p;
+    protected Player player;
     protected Texture2D background;
     protected Rectangle button;
 
@@ -31,8 +31,9 @@ public class UIscreen
 
 public class StartScreen : UIscreen
 {
-    public StartScreen()
+    public StartScreen(Player inPlayer)
     {
+        player = inPlayer;
         background = Raylib.LoadTexture("startscreen.png");
         button = new((GameManager.screenWidth / 2) - 110, (GameManager.screenHeight / 2) + 40, 220, 95);
     }
@@ -44,26 +45,33 @@ public class StartScreen : UIscreen
         Raylib.DrawText("START", 433, 445, 40, Color.BLACK);
         Raylib.EndDrawing();
     }
+
+    public override void Logic()
+    {
+        base.Logic();
+        player.ResetCharacter();
+    }
 }
 
 public class GameOverScreen : UIscreen
 {
     public GameOverScreen(Player inPlayer)
     {
-        p = inPlayer;
+        player = inPlayer;
         background = Raylib.LoadTexture("deathscreen.png");
-        button = new((GameManager.screenWidth / 2), (GameManager.screenHeight / 2) + 40, 220, 95);
+        button = new((GameManager.screenWidth / 2) + 175, (GameManager.screenHeight / 2) + 140, 250, 95);
     }
 
     public override void Draw()
     {
         base.Draw();
+        Raylib.DrawText("Restart", (int)(button.x + 27), (int)(button.y + 25), 50, Color.BLACK);
         Raylib.EndDrawing();
     }
 
     public override void Logic()
     {
-        p.ResetCharacter();
+        player.ResetCharacter();
         base.Logic();
     }
 }
@@ -72,12 +80,14 @@ public class WinScreen : UIscreen
 {
     public WinScreen()
     {
-        background = Raylib.LoadTexture("");
+        button = new((GameManager.screenWidth / 2) + 175, (GameManager.screenHeight / 2) + 140, 250, 95);
+        background = Raylib.LoadTexture("winscreen.png");
     }
 
     public override void Draw()
     {
         base.Draw();
+        Raylib.DrawText("Menu", (int)(button.x + 60), (int)(button.y + 25), 50, Color.BLACK);
         Raylib.EndDrawing();
     }
     public override void Logic()

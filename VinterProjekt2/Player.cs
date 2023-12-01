@@ -1,25 +1,35 @@
 using Raylib_cs;
+using System.Diagnostics;
 using System.Numerics;
+using System.Threading;
 
 public class Player
 {
     //Logic
     public Rectangle playerRect = new(0, 0, 50, 75);
     private bool isGrounded;
+    private bool wasGrounded;
     public bool canJump;
     private int direction;
     private float verticalVelocity;
     private Vector2 lastPosition;
+    private CoyoteTimer coyoteTimer;
 
     private void Gravity(Level l)
     {
         if ((Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) || Raylib.IsKeyPressed(KeyboardKey.KEY_UP)) && canJump)
         {
+            canJump = false;
             verticalVelocity = -10;
         }
         else if (isGrounded || GetWallCollide(l))
         {
             verticalVelocity = 0;
+        }
+        else if (playerRect.y <= 0)
+        {
+            verticalVelocity = 0;
+            playerRect.y = 0;
         }
 
         if (!isGrounded && verticalVelocity < 15)
@@ -50,12 +60,9 @@ public class Player
                 {
                     case 0:
                         isGrounded = false;
-                        canJump = false;
                         break;
                     case 3:
-                        GameManager.currentState = GameManager.State.UIscreen;
-                        GameManager.ChangeUI(2);
-                        break;
+                        return;
                     case 4:
                         isGrounded = false;
                         canJump = false;
@@ -74,6 +81,14 @@ public class Player
     {
         return l.walls.Any(wallTile => Raylib.CheckCollisionRecs(playerRect, wallTile));
     }
+    public void CheckSpikeDeath(Level l)
+    {
+        if (l.spikes.Any(spike => Raylib.CheckCollisionRecs(playerRect, spike)))
+        {
+            GameManager.currentState = GameManager.State.UIscreen;
+            GameManager.ChangeUI(2);
+        }
+    }
 
     public void Movement(Level level)
     {
@@ -82,7 +97,7 @@ public class Player
             direction = 1;
             playerRect.x += 5;
         }
-        else if (Raylib.IsKeyDown(KeyboardKey.KEY_A) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT))
+        else if ((Raylib.IsKeyDown(KeyboardKey.KEY_A) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT)) && playerRect.x >= 0)
         {
             direction = -1;
             playerRect.x -= 5;
@@ -95,10 +110,17 @@ public class Player
         }
 
         Gravity(level);
+        wasGrounded = isGrounded;
         CheckGroundCollisions(level);
+
+        if (wasGrounded && !isGrounded && verticalVelocity == 0) //Funkar för att när man lämnar en plattform är verticalVelocity alltid 0
+        {
+            coyoteTimer.StartTimer();
+        }
 
         lastPosition.X = playerRect.x;
     }
+
 
     public void ResetCharacter()
     {
@@ -178,12 +200,14 @@ public class Player
     //Constructor
     public Player()
     {
+        coyoteTimer = new(this);
         ResetCharacter();
-        
+
         sprites = new Texture2D[]
         {Raylib.LoadTexture("character.png"),
         Raylib.LoadTexture("running.png"),
         Raylib.LoadTexture("air.png"),
-        Raylib.LoadTexture("fall.png")};
+        Raylib.LoadTexture("fall.png"),
+        Raylib.LoadTexture("onwall.png")};
     }
 }

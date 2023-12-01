@@ -14,7 +14,8 @@ public class GameManager
     public const int screenWidth = 1008;
     public const int screenHeight = 756;
 
-    private Player p;
+    private Player _player;
+    private Camera _camera;
     private static UIscreen currentUI;
     private static StartScreen startScreen;
     private static GameOverScreen gameOverScreen;
@@ -48,10 +49,11 @@ public class GameManager
         Raylib.InitWindow(screenWidth, screenHeight, "mongo");
         Raylib.SetTargetFPS(60);
         currentState = State.UIscreen;
-        p = new Player();
+        _player = new Player();
+        _camera = new Camera(_player);
         
-        startScreen = new();
-        gameOverScreen = new(p);
+        startScreen = new(_player);
+        gameOverScreen = new(_player);
         winScreen = new();
         currentUI = startScreen;
 
@@ -59,6 +61,8 @@ public class GameManager
         l2 = new();
         levels = new Level[] { l1, l2 };
         levelInt = 0;
+
+        _camera.InitializeCamera();
     }
 
     public static void ChangeUI(int uiSelector)
@@ -82,18 +86,19 @@ public class GameManager
     private void ResetGame()
     {
         levelInt = 0;
-        p.ResetCharacter();
+        _player.ResetCharacter();
         ChangeUI(1);
         currentState = State.UIscreen;
     }
 
     private void GameLogic()
     {
-        p.Movement(currentLevel);
-        if (currentLevel.WinCheck(p))
+        _player.Movement(currentLevel);
+        _player.CheckSpikeDeath(currentLevel);
+        if (currentLevel.WinCheck(_player))
         {
-            p.playerRect.x = 0;
-            p.playerRect.y = 0;
+            _player.playerRect.x = 0;
+            _player.playerRect.y = 0;
             levelInt++;
         }
     }
@@ -102,7 +107,7 @@ public class GameManager
     {
         Raylib.BeginDrawing();
         Raylib.ClearBackground(Color.WHITE);
-        p.DrawCharacter(currentLevel);
+        _player.DrawCharacter(currentLevel);
         currentLevel.DrawLevel();
         Raylib.EndDrawing();
     }

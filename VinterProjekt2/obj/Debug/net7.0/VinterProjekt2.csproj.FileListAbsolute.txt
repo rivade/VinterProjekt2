@@ -27,3 +27,4 @@ C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\onwall.png
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\deathscreen.png
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\startscreen.png
+C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\winscreen.png

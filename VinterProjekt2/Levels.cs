@@ -8,6 +8,7 @@ public class Level
 
     public int[,] layout;
     public List<Rectangle> walls = new();
+    public List<Rectangle> spikes = new();
     private Rectangle goal;
 
     public virtual void DrawLevel()
@@ -38,7 +39,7 @@ public class Level
 
     }
 
-    public void GenerateWallsGoal()
+    public void GenerateWallsGoalSpikes()
     {
         for (int y = 0; y < layout.GetLength(0); y++)
         {
@@ -48,6 +49,9 @@ public class Level
                 {
                     case 2:
                         walls.Add(new Rectangle(x * blockWidth, y * blockHeight, blockWidth, blockHeight));
+                        break;
+                    case 3:
+                        spikes.Add(new Rectangle(x * blockWidth, y * blockHeight, blockWidth, blockHeight));
                         break;
                     case 4:
                         goal = new Rectangle(x * blockWidth, y * blockHeight, blockWidth, blockHeight);
@@ -72,15 +76,15 @@ public class LevelOne : Level
         {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 2, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3},
-            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0},
-            {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0},
             {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 4},
+            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0},
+            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0},
+            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0},
+            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0},
             {1, 1, 1, 1, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3}
         };
-        GenerateWallsGoal();
+        GenerateWallsGoalSpikes();
     }
 }
 
@@ -100,6 +104,6 @@ public class LevelTwo : Level
             {2, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 4},
             {1, 1, 1, 1, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3}
         };
-        GenerateWallsGoal();
+        GenerateWallsGoalSpikes();
     }
 }
