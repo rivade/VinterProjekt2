@@ -1,5 +1,6 @@
 using Raylib_cs;
 using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Numerics;
 using System.Threading;
 
@@ -9,6 +10,7 @@ public class Player
     public Rectangle playerRect = new(0, 0, 50, 75);
     private bool isGrounded;
     private bool wasGrounded;
+    private bool wasOnWall;
     public bool canJump;
     private int direction;
     private float verticalVelocity;
@@ -64,9 +66,7 @@ public class Player
                     case 3:
                         return;
                     case 4:
-                        isGrounded = false;
-                        canJump = false;
-                        break;
+                        return;
                     default:
                         isGrounded = true;
                         canJump = true;
@@ -107,6 +107,12 @@ public class Player
         {
             playerRect.x = lastPosition.X;
             canJump = true;
+            wasOnWall = true;
+        }
+        else if (wasOnWall)
+        {
+            canJump = false;
+            wasOnWall = false;
         }
 
         Gravity(level);
@@ -126,9 +132,11 @@ public class Player
     {
         direction = 1;
         isGrounded = false;
+        canJump = false;
+        wasOnWall = false;
         currentSprite = 0;
         verticalVelocity = 0;
-        playerRect.x = 0; playerRect.y = 0;
+        playerRect.x = 0; playerRect.y = ((GameManager.screenHeight - Level.blockHeight) - playerRect.height);
     }
 
 

@@ -16,7 +16,6 @@ public class Camera
     public void InitializeCamera()
     {
         c.zoom = 1;
-        c.rotation = 0;
         c.offset = new Vector2(GameManager.screenWidth / 2, GameManager.screenHeight / 2);
     }
     public void CameraBounds(int levelWidth) //Gör så att kameran bara följer efter spelaren efter den passerat en viss punkt vilket gör det snyggare

@@ -28,7 +28,7 @@ public class GameManager
             {
                 return levels[levelInt];
             }
-            catch //Spelaren har vunnit;
+            catch //Spelaren har vunnit. Throwar en out of range exception eftersom levelint i detta fall blir större än levels-arrayens längd.
             {
                 ChangeUI(3);
                 levelInt = 0;
@@ -98,8 +98,7 @@ public class GameManager
         _player.CheckSpikeDeath(currentLevel);
         if (currentLevel.WinCheck(_player))
         {
-            _player.playerRect.x = 0;
-            _player.playerRect.y = 0;
+            _player.ResetCharacter();
             levelInt++;
         }
     }
@@ -112,7 +111,7 @@ public class GameManager
         _player.DrawCharacter(currentLevel);
         currentLevel.DrawLevel();
         Raylib.EndMode2D();
-        Raylib.DrawText($"Level {levelInt}", 800, 10, 30, Color.BLACK);
+        Raylib.DrawText($"Level {levelInt + 1}", 880, 10, 30, Color.BLACK);
         Raylib.EndDrawing();
     }
 
