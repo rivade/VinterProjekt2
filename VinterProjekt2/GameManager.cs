@@ -93,6 +93,7 @@ public class GameManager
 
     private void GameLogic()
     {
+        _camera.CameraBounds((currentLevel.layout.GetLength(0) * Level.blockWidth));
         _player.Movement(currentLevel);
         _player.CheckSpikeDeath(currentLevel);
         if (currentLevel.WinCheck(_player))
@@ -106,9 +107,12 @@ public class GameManager
     private void DrawGame()
     {
         Raylib.BeginDrawing();
+        Raylib.BeginMode2D(_camera.c);
         Raylib.ClearBackground(Color.WHITE);
         _player.DrawCharacter(currentLevel);
         currentLevel.DrawLevel();
+        Raylib.EndMode2D();
+        Raylib.DrawText($"Level {levelInt}", 800, 10, 30, Color.BLACK);
         Raylib.EndDrawing();
     }
 
