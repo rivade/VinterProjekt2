@@ -6,15 +6,19 @@ public class UIscreen
     protected Player player;
     protected Texture2D background;
     protected Rectangle button;
+    protected Color buttonColor;
 
 
     public virtual void Logic()
     {
+        buttonColor = new(137, 137, 137, 255);
         Vector2 mouse = Raylib.GetMousePosition();
         if (Raylib.CheckCollisionPointRec(mouse, button))
         {
+            buttonColor = new(171, 171, 171, 255);
             if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
             {
+                player.ResetCharacter();
                 GameManager.currentState = GameManager.State.Game;
             }
         }
@@ -25,7 +29,7 @@ public class UIscreen
         Raylib.BeginDrawing();
         Raylib.ClearBackground(Color.WHITE);
         Raylib.DrawTexture(background, 0, 0, Color.WHITE);
-        Raylib.DrawRectangleRec(button, Color.GRAY);
+        Raylib.DrawRectangleRec(button, buttonColor);
     }
 }
 
@@ -45,12 +49,6 @@ public class StartScreen : UIscreen
         Raylib.DrawText("START", 433, 445, 40, Color.BLACK);
         Raylib.EndDrawing();
     }
-
-    public override void Logic()
-    {
-        base.Logic();
-        player.ResetCharacter();
-    }
 }
 
 public class GameOverScreen : UIscreen
@@ -67,12 +65,6 @@ public class GameOverScreen : UIscreen
         base.Draw();
         Raylib.DrawText("Restart", (int)(button.x + 27), (int)(button.y + 25), 50, Color.BLACK);
         Raylib.EndDrawing();
-    }
-
-    public override void Logic()
-    {
-        player.ResetCharacter();
-        base.Logic();
     }
 }
 
@@ -92,11 +84,13 @@ public class WinScreen : UIscreen
     }
     public override void Logic()
     {
+        buttonColor = new(137, 137, 137, 255);
         Vector2 mouse = Raylib.GetMousePosition();
         if (Raylib.CheckCollisionPointRec(mouse, button))
         {
+            buttonColor = new(171, 171, 171, 255);
             if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
-            {
+            {   
                 GameManager.ChangeUI(1);
             }
         }

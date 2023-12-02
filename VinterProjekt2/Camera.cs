@@ -6,7 +6,8 @@ public class Camera
 {
     Player player;
 
-    const int playerMaxDistanceToLvlEnd = 754;
+    const int playerCameraOffset = 250;
+    const int playerMaxDistanceToLvlEnd = GameManager.screenWidth - playerCameraOffset;
 
     public Camera(Player inPlayer)
     {
@@ -21,7 +22,7 @@ public class Camera
     public void CameraBounds(int levelWidth) //Gör så att kameran bara följer efter spelaren efter den passerat en viss punkt vilket gör det snyggare
     {
         if (player.playerRect.x >= 265 && (levelWidth - player.playerRect.x >= playerMaxDistanceToLvlEnd))
-            c.target = new Vector2((player.playerRect.x + 250), (GameManager.screenHeight / 2));
+            c.target = new Vector2((player.playerRect.x + playerCameraOffset), (GameManager.screenHeight / 2));
 
         else if (levelWidth - player.playerRect.x <= playerMaxDistanceToLvlEnd)
             c.target = new Vector2((levelWidth - (GameManager.screenWidth / 2)), GameManager.screenHeight / 2);

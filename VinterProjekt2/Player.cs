@@ -92,7 +92,7 @@ public class Player
 
     public void Movement(Level level)
     {
-        if (Raylib.IsKeyDown(KeyboardKey.KEY_D) || Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT))
+        if ((Raylib.IsKeyDown(KeyboardKey.KEY_D) || Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT)) && (playerRect.x + playerRect.width) <= (level.layout.GetLength(1) * Level.blockWidth))
         {
             direction = 1;
             playerRect.x += 5;
