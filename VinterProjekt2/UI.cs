@@ -47,7 +47,15 @@ public class StartScreen : UIscreen
         base.Draw();
         Raylib.DrawText("Jumper!", 363, 200, 75, Color.WHITE);
         Raylib.DrawText("START", 433, 445, 40, Color.BLACK);
+        Raylib.DrawText("Press I for instructions!", 228, 550, 40, Color.RED);
         Raylib.EndDrawing();
+    }
+
+    public override void Logic(Level level)
+    {
+        base.Logic(level);
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_I))
+            GameManager.ChangeUI(4);
     }
 }
 
@@ -94,5 +102,28 @@ public class WinScreen : UIscreen
                 GameManager.ChangeUI(1);
             }
         }
+    }
+}
+
+public class InfoScreen : UIscreen
+{
+    public InfoScreen(Player inPlayer)
+    {
+        player = inPlayer;
+        button = new((GameManager.screenWidth / 2) - 110, (GameManager.screenHeight / 2) + 140, 220, 95);
+    }
+
+    public override void Draw()
+    {
+        Raylib.BeginDrawing();
+        Raylib.ClearBackground(Color.BLUE);
+        Raylib.DrawText("Use A/D or left/right arrow keys to move", 65, 180, 40, Color.BLACK);
+        Raylib.DrawText("Press SPACE or Up arrow key to jump", 105, 220, 40, Color.BLACK);
+        Raylib.DrawText("You can jump when moving against walls,", 95, 260, 40, Color.BLACK);
+        Raylib.DrawText("but you have to keep pushing into them!", 90, 300, 40, Color.BLACK);
+        Raylib.DrawText("Avoid the spikes as they kill you!", 130, 340, 40, Color.BLACK);
+        Raylib.DrawRectangleRec(button, buttonColor);
+        Raylib.DrawText("START", 433, 545, 40, Color.BLACK);
+        Raylib.EndDrawing();
     }
 }

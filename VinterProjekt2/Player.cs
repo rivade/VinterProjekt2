@@ -22,7 +22,7 @@ public class Player
         if ((Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE) || Raylib.IsKeyPressed(KeyboardKey.KEY_UP)) && canJump)
         {
             canJump = false;
-            verticalVelocity = -10;
+            verticalVelocity = -8.5f;
         }
         else if (isGrounded || GetWallCollide(l))
         {
@@ -212,8 +212,11 @@ public class Player
         if (currentSprite == 1)
         {
             FrameLogic();
-            sourceRec.x = frame * sourceRec.width;
+            sourceRec.x = frame * Math.Abs(sourceRec.width); //Absolutvärdet förhindrar spriten från att springa baklänges
         }
+
+        //Raylib.DrawRectangle((int)playerRect.x, (int)playerRect.y, (int)playerRect.width, (int)playerRect.height, Color.GREEN);
+        
         Raylib.DrawTextureRec(sprite, sourceRec, new Vector2(playerRect.x, playerRect.y), Color.WHITE);
     }
 

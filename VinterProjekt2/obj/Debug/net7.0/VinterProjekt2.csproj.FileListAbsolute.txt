@@ -30,3 +30,5 @@ C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\winscreen.png
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\groundtile.png
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\wall.png
+C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\spikeball.png
+C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\walltile.png

@@ -20,6 +20,7 @@ public class GameManager
     private static StartScreen startScreen;
     private static GameOverScreen gameOverScreen;
     private static WinScreen winScreen;
+    private static InfoScreen infoScreen;
     private Level currentLevel
     {
         get
@@ -55,6 +56,7 @@ public class GameManager
         startScreen = new(_player);
         gameOverScreen = new(_player);
         winScreen = new();
+        infoScreen = new(_player);
         currentUI = startScreen;
 
         l1 = new();
@@ -79,6 +81,10 @@ public class GameManager
 
             case 3:
                 currentUI = winScreen;
+                break;
+            
+            case 4:
+                currentUI = infoScreen;
                 break;
         }
     }
@@ -112,6 +118,8 @@ public class GameManager
         currentLevel.DrawTiles();
         _player.DrawCharacter(currentLevel);
         Raylib.EndMode2D();
+        Raylib.DrawFPS(10, 10);
+        Raylib.DrawRectangle(855, 0, 153, 50, Color.GOLD);
         Raylib.DrawText($"Level {levelInt + 1}", 880, 10, 30, Color.BLACK);
         Raylib.EndDrawing();
     }
