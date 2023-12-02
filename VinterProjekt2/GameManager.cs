@@ -28,7 +28,7 @@ public class GameManager
             {
                 return levels[levelInt];
             }
-            catch //Spelaren har vunnit. Throwar en out of range exception eftersom levelint i detta fall blir större än levels-arrayens längd.
+            catch (IndexOutOfRangeException) //Spelaren har vunnit. Blir IndexOutOfRangeException eftersom levelint i detta fall blir större än levels-arrayens längd.
             {
                 ChangeUI(3);
                 levelInt = 0;
@@ -86,7 +86,7 @@ public class GameManager
     private void ResetGame()
     {
         levelInt = 0;
-        _player.ResetCharacter();
+        _player.ResetCharacter(currentLevel);
         ChangeUI(1);
         currentState = State.UIscreen;
     }
@@ -98,7 +98,7 @@ public class GameManager
         _player.CheckSpikeDeath(currentLevel);
         if (currentLevel.WinCheck(_player))
         {
-            _player.ResetCharacter();
+            _player.ResetCharacter(currentLevel);
             levelInt++;
         }
     }
@@ -108,8 +108,9 @@ public class GameManager
         Raylib.BeginDrawing();
         Raylib.BeginMode2D(_camera.c);
         Raylib.ClearBackground(Color.WHITE);
+        currentLevel.DrawBackground(_player, _camera);
+        currentLevel.DrawTiles();
         _player.DrawCharacter(currentLevel);
-        currentLevel.DrawLevel();
         Raylib.EndMode2D();
         Raylib.DrawText($"Level {levelInt + 1}", 880, 10, 30, Color.BLACK);
         Raylib.EndDrawing();
@@ -122,7 +123,7 @@ public class GameManager
             switch (currentState)
             {
                 case State.UIscreen:
-                    currentUI.Logic();
+                    currentUI.Logic(currentLevel);
                     currentUI.Draw();
                     break;
                 case State.Game:

@@ -5,13 +5,66 @@ public class Level
 {
     public const int blockWidth = GameManager.screenWidth / 16;
     public const int blockHeight = GameManager.screenHeight / 14;
+    private const float parallaxFactor = 3.5f;
 
     public int[,] layout;
     public List<Rectangle> walls = new();
     public List<Rectangle> spikes = new();
     private Rectangle goal;
 
-    public virtual void DrawLevel()
+    public float bgOffset = 0;
+    private int playerMovement;
+    private int playerLastX;
+    private Texture2D bg = Raylib.LoadTexture("wall.png");
+    private Texture2D groundTile = Raylib.LoadTexture("groundtile.png");
+
+    public void DrawBackground(Player player, Camera camera)
+    {
+        UpdatePlayerMovement(player, camera);
+
+        bgOffset += parallaxFactor * playerMovement;
+
+        for (int x = -2; x < layout.GetLength(1); x++)
+        {
+            for (int y = 0; y < 2; y++)
+            {
+                Raylib.DrawTexture(bg, (int)((x * bg.width) + bgOffset), y * bg.height, Color.WHITE);
+            }
+        }
+
+        playerLastX = (int)player.playerRect.x;
+    }
+
+    private void UpdatePlayerMovement(Player player, Camera camera)
+    {
+        if (IsPlayerMovingRight(player) && camera.isTrackingPlayer)
+        {
+            playerMovement = 1;
+        }
+        else if (IsPlayerMovingLeft(player) && camera.isTrackingPlayer)
+        {
+            playerMovement = -1;
+        }
+        else
+        {
+            playerMovement = 0;
+        }
+    }
+
+    private bool IsPlayerMovingRight(Player player)
+    {
+        return (Raylib.IsKeyDown(KeyboardKey.KEY_D) || Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT))
+            && (player.playerRect.x != playerLastX);
+    }
+
+    private bool IsPlayerMovingLeft(Player player)
+    {
+        return (Raylib.IsKeyDown(KeyboardKey.KEY_A) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT))
+            && (player.playerRect.x != playerLastX);
+    }
+
+
+    public virtual void DrawTiles()
     {
         for (int y = 0; y < layout.GetLength(0); y++)
         {
@@ -20,7 +73,7 @@ public class Level
                 switch (layout[y, x])
                 {
                     case 1:
-                        Raylib.DrawRectangle(x * blockWidth, y * blockHeight, blockWidth, blockHeight, Color.BLACK);
+                        Raylib.DrawTexture(groundTile, x * blockWidth, y * blockHeight, Color.WHITE);
                         break;
 
                     case 2:
@@ -39,7 +92,7 @@ public class Level
 
     }
 
-    public void GenerateWallsGoalSpikes()
+    public void GenerateRectangles()
     {
         for (int y = 0; y < layout.GetLength(0); y++)
         {
@@ -89,7 +142,7 @@ public class LevelOne : Level
             {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0},
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1}
         };
-        GenerateWallsGoalSpikes();
+        GenerateRectangles();
     }
 }
 
@@ -114,6 +167,6 @@ public class LevelTwo : Level
             {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 4},
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1}
         };
-        GenerateWallsGoalSpikes();
+        GenerateRectangles();
     }
 }

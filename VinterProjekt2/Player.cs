@@ -12,7 +12,7 @@ public class Player
     private bool wasGrounded;
     private bool wasOnWall;
     public bool canJump;
-    private int direction;
+    public int direction;
     private float verticalVelocity;
     private Vector2 lastPosition;
     private CoyoteTimer coyoteTimer;
@@ -128,7 +128,7 @@ public class Player
     }
 
 
-    public void ResetCharacter()
+    public void ResetCharacter(Level l)
     {
         direction = 1;
         isGrounded = false;
@@ -137,6 +137,14 @@ public class Player
         currentSprite = 0;
         verticalVelocity = 0;
         playerRect.x = 0; playerRect.y = ((GameManager.screenHeight - Level.blockHeight) - playerRect.height);
+        try
+        {
+            l.bgOffset = 0;
+        }
+        catch (NullReferenceException)
+        {
+            return;
+        }
     }
 
 
@@ -177,6 +185,11 @@ public class Player
             currentSprite = 1;
         }
 
+        else if (wasOnWall)
+        {
+            currentSprite = 4;
+        }
+
         else if (!isGrounded && verticalVelocity < 0)
         {
             currentSprite = 2;
@@ -209,7 +222,7 @@ public class Player
     public Player()
     {
         coyoteTimer = new(this);
-        ResetCharacter();
+        ResetCharacter(null);
 
         sprites = new Texture2D[]
         {Raylib.LoadTexture("character.png"),

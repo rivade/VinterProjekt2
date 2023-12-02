@@ -9,7 +9,7 @@ public class UIscreen
     protected Color buttonColor;
 
 
-    public virtual void Logic()
+    public virtual void Logic(Level level)
     {
         buttonColor = new(137, 137, 137, 255);
         Vector2 mouse = Raylib.GetMousePosition();
@@ -18,7 +18,7 @@ public class UIscreen
             buttonColor = new(171, 171, 171, 255);
             if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
             {
-                player.ResetCharacter();
+                player.ResetCharacter(level);
                 GameManager.currentState = GameManager.State.Game;
             }
         }
@@ -82,7 +82,7 @@ public class WinScreen : UIscreen
         Raylib.DrawText("Menu", (int)(button.x + 60), (int)(button.y + 25), 50, Color.BLACK);
         Raylib.EndDrawing();
     }
-    public override void Logic()
+    public override void Logic(Level l)
     {
         buttonColor = new(137, 137, 137, 255);
         Vector2 mouse = Raylib.GetMousePosition();
