@@ -16,11 +16,7 @@ public class GameManager
 
     private Player _player;
     private Camera _camera;
-    private static UIscreen currentUI;
-    private static StartScreen startScreen;
-    private static GameOverScreen gameOverScreen;
-    private static WinScreen winScreen;
-    private static InfoScreen infoScreen;
+
     private Level currentLevel
     {
         get
@@ -31,17 +27,25 @@ public class GameManager
             }
             catch (IndexOutOfRangeException) //Spelaren har vunnit. Blir IndexOutOfRangeException eftersom levelint i detta fall blir större än levels-arrayens längd.
             {
-                ChangeUI(3);
+                ChangeUI(2);
                 levelInt = 0;
                 currentState = State.UIscreen;
                 return levels[levelInt];
             }
         }
     }
-    private LevelOne l1;
-    private LevelTwo l2;
     private Level[] levels;
     private int levelInt;
+
+    private UIscreen currentUI
+    {
+        get
+        {
+            return uiScreens[uiInt];
+        }
+    }
+    private UIscreen[] uiScreens;
+    private static int uiInt;
 
 
 
@@ -53,47 +57,25 @@ public class GameManager
         _player = new Player();
         _camera = new Camera(_player);
 
-        startScreen = new(_player);
-        gameOverScreen = new(_player);
-        winScreen = new();
-        infoScreen = new(_player);
-        currentUI = startScreen;
-
-        l1 = new();
-        l2 = new();
-        levels = new Level[] { l1, l2 };
+        levels = new Level[] { new LevelOne(), new LevelTwo(), new LevelThree(), new LevelFour() };
         levelInt = 0;
+
+        uiScreens = new UIscreen[] { new StartScreen(_player), new GameOverScreen(_player), new WinScreen(), new InfoScreen(_player) };
+        uiInt = 0;
 
         _camera.InitializeCamera();
     }
 
     public static void ChangeUI(int uiSelector)
     {
-        switch (uiSelector)
-        {
-            case 1:
-                currentUI = startScreen;
-                break;
-
-            case 2:
-                currentUI = gameOverScreen;
-                break;
-
-            case 3:
-                currentUI = winScreen;
-                break;
-            
-            case 4:
-                currentUI = infoScreen;
-                break;
-        }
+        uiInt = uiSelector;
     }
 
     private void ResetGame()
     {
         levelInt = 0;
         _player.ResetCharacter(currentLevel);
-        ChangeUI(1);
+        ChangeUI(0);
         currentState = State.UIscreen;
     }
 

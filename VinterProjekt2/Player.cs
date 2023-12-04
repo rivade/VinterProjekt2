@@ -86,7 +86,7 @@ public class Player
         if (l.spikes.Any(spike => Raylib.CheckCollisionRecs(playerRect, spike)))
         {
             GameManager.currentState = GameManager.State.UIscreen;
-            GameManager.ChangeUI(2);
+            GameManager.ChangeUI(1);
         }
     }
 

@@ -55,7 +55,7 @@ public class StartScreen : UIscreen
     {
         base.Logic(level);
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_I))
-            GameManager.ChangeUI(4);
+            GameManager.ChangeUI(3);
     }
 }
 
@@ -99,7 +99,7 @@ public class WinScreen : UIscreen
             buttonColor = new(171, 171, 171, 255);
             if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
             {   
-                GameManager.ChangeUI(1);
+                GameManager.ChangeUI(0);
             }
         }
     }
@@ -122,6 +122,7 @@ public class InfoScreen : UIscreen
         Raylib.DrawText("You can jump when moving against walls,", 95, 260, 40, Color.BLACK);
         Raylib.DrawText("but you have to keep pushing into them!", 90, 300, 40, Color.BLACK);
         Raylib.DrawText("Avoid the spikes as they kill you!", 130, 340, 40, Color.BLACK);
+        Raylib.DrawText("Get to the portal at the end to win.", 105, 380, 40, Color.BLACK);
         Raylib.DrawRectangleRec(button, buttonColor);
         Raylib.DrawText("START", 433, 545, 40, Color.BLACK);
         Raylib.EndDrawing();
