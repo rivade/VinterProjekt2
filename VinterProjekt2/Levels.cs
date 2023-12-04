@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Numerics;
 using Raylib_cs;
 
 public class Level
@@ -7,14 +8,17 @@ public class Level
     public const int blockHeight = GameManager.screenHeight / 12;
     private const float parallaxFactor = 3.5f;
 
+    private AnimationController anim = new(0.07f, 5);
+
     public int[,] layout;
     public List<Rectangle> walls = new();
     public List<Rectangle> spikes = new();
     private Rectangle goal;
 
-    public float bgOffset = 0;
+    public float parallaxOffset = 0;
     private int playerLastX;
     private Texture2D bg = Raylib.LoadTexture("wall.png");
+    private Texture2D portal = Raylib.LoadTexture("portal.png");
     private Texture2D groundTile = Raylib.LoadTexture("groundtile.png");
     private Texture2D wallTile = Raylib.LoadTexture("walltile.png");
     private Texture2D spikeBall = Raylib.LoadTexture("spikeball.png");
@@ -23,13 +27,13 @@ public class Level
     {
         int playerMovement = GetPlayerDirection(player, camera);
 
-        bgOffset += parallaxFactor * playerMovement;
+        parallaxOffset += parallaxFactor * playerMovement;
 
-        for (int x = 0; x < layout.GetLength(1); x++)
+        for (int x = -1; x < layout.GetLength(1); x++)
         {
             for (int y = 0; y < 2; y++)
             {
-                Raylib.DrawTexture(bg, (int)((x * bg.width) + bgOffset), y * bg.height, Color.WHITE);
+                Raylib.DrawTexture(bg, (int)((x * bg.width) + parallaxOffset), y * bg.height, Color.WHITE);
             }
         }
 
@@ -67,6 +71,10 @@ public class Level
 
     public virtual void DrawTiles()
     {
+        Rectangle sourceRec = new Rectangle(0, 0, 63, 126);
+        anim.FrameLogic();
+        sourceRec.x = anim.frame * sourceRec.width;
+
         for (int y = 0; y < layout.GetLength(0); y++)
         {
             for (int x = 0; x < layout.GetLength(1); x++)
@@ -84,7 +92,7 @@ public class Level
                         Raylib.DrawTexture(spikeBall, x * blockWidth, y * blockHeight, Color.WHITE);
                         break;
                     case 4:
-                        Raylib.DrawRectangle(x * blockWidth, y * blockHeight, blockWidth, blockHeight, Color.GREEN);
+                        Raylib.DrawTextureRec(portal, sourceRec, new Vector2(x * blockWidth, (y * blockHeight) - blockHeight), Color.WHITE);
                         break;
 
                 }
@@ -196,18 +204,18 @@ public class LevelFour : Level
     {
         layout = new int[,]
         {
-            {0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 2, 3, 3, 0, 0, 2, 0, 0, 3, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 2, 0, 0, 3, 3, 2, 3, 3, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 4},
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1}
+            {0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 2},
+            {0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+            {0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+            {0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 2},
+            {0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 3, 3, 0, 0, 2},
+            {0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 2},
+            {0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 2},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 2},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 3, 3, 2},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 3, 3, 0, 0, 2, 2, 3, 3, 3, 3, 3, 2, 2, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 4},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
         };
         GenerateRectangles();
     }

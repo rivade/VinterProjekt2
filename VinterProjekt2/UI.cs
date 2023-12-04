@@ -45,7 +45,7 @@ public class StartScreen : UIscreen
     public override void Draw()
     {
         base.Draw();
-        Raylib.DrawText("Jumper!", 363, 200, 75, Color.WHITE);
+        Raylib.DrawText("Jumpman 2", 300, 200, 75, Color.WHITE);
         Raylib.DrawText("START", 433, 445, 40, Color.BLACK);
         Raylib.DrawText("Press I for instructions!", 228, 550, 40, Color.RED);
         Raylib.EndDrawing();

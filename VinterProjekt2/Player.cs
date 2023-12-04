@@ -15,7 +15,9 @@ public class Player
     public int direction;
     private float verticalVelocity;
     private Vector2 lastPosition;
+
     private CoyoteTimer coyoteTimer;
+    private AnimationController anim;
 
     private void Gravity(Level l)
     {
@@ -139,7 +141,7 @@ public class Player
         playerRect.x = 0; playerRect.y = ((GameManager.screenHeight - Level.blockHeight) - playerRect.height);
         try
         {
-            l.bgOffset = 0;
+            l.parallaxOffset = 0;
         }
         catch (NullReferenceException)
         {
@@ -151,8 +153,6 @@ public class Player
 
 
     //Drawing
-    private int frame = 1;
-    private float elapsed = 0;
     private Texture2D[] sprites;
     public int currentSprite { get; set; }
     private Texture2D sprite
@@ -164,19 +164,7 @@ public class Player
 
         set { }
     }
-    private void FrameLogic()
-    {
-        const float frameDuration = 0.07f;
-        elapsed += Raylib.GetFrameTime();
-
-        if (elapsed >= frameDuration)
-        {
-            frame++;
-            elapsed -= frameDuration;
-        }
-
-        frame %= 12;
-    }
+    
     private void SpriteSelector(Level level)
     {
         if ((Raylib.IsKeyDown(KeyboardKey.KEY_D) || Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT) ||
@@ -211,8 +199,8 @@ public class Player
         Rectangle sourceRec = new Rectangle(0, 0, 50 * direction, 75);
         if (currentSprite == 1)
         {
-            FrameLogic();
-            sourceRec.x = frame * Math.Abs(sourceRec.width); //Absolutvärdet förhindrar spriten från att springa baklänges
+            anim.FrameLogic();
+            sourceRec.x = anim.frame * Math.Abs(sourceRec.width); //Absolutvärdet förhindrar spriten från att springa baklänges
         }
 
         //Raylib.DrawRectangle((int)playerRect.x, (int)playerRect.y, (int)playerRect.width, (int)playerRect.height, Color.GREEN);
@@ -225,6 +213,8 @@ public class Player
     public Player()
     {
         coyoteTimer = new(this);
+        anim = new(0.07f, 12);
+
         ResetCharacter(null);
 
         sprites = new Texture2D[]

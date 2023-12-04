@@ -51,8 +51,10 @@ public class GameManager
 
     public GameManager()
     {
-        Raylib.InitWindow(screenWidth, screenHeight, "mongo");
+        Raylib.InitWindow(screenWidth, screenHeight, "Jumpman 2");
         Raylib.SetTargetFPS(60);
+        Raylib.InitAudioDevice();
+        Raylib.SetMasterVolume(1);
         currentState = State.UIscreen;
         _player = new Player();
         _camera = new Camera(_player);
