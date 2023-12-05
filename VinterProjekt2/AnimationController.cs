@@ -4,8 +4,8 @@ public class AnimationController
 {
     public int frame = 1;
     private float elapsed = 0;
-    private float frameDuration;
-    private int totalFrames;
+    private readonly float frameDuration;
+    private readonly int totalFrames;
 
     public void FrameLogic()
     {

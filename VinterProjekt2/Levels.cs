@@ -17,11 +17,11 @@ public class Level
 
     public float parallaxOffset = 0;
     private int playerLastX;
-    private Texture2D bg = Raylib.LoadTexture("wall.png");
-    private Texture2D portal = Raylib.LoadTexture("portal.png");
-    private Texture2D groundTile = Raylib.LoadTexture("groundtile.png");
-    private Texture2D wallTile = Raylib.LoadTexture("walltile.png");
-    private Texture2D spikeBall = Raylib.LoadTexture("spikeball.png");
+    private Texture2D bg = Raylib.LoadTexture("Backgrounds/wall.png");
+    private Texture2D portal = Raylib.LoadTexture("Sprites/portal.png");
+    private Texture2D groundTile = Raylib.LoadTexture("Sprites/groundtile.png");
+    private Texture2D wallTile = Raylib.LoadTexture("Sprites/walltile.png");
+    private Texture2D spikeBall = Raylib.LoadTexture("Sprites/spikeball.png");
 
     public void DrawBackground(Player player, Camera camera)
     {

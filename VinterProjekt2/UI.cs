@@ -38,7 +38,7 @@ public class StartScreen : UIscreen
     public StartScreen(Player inPlayer)
     {
         player = inPlayer;
-        background = Raylib.LoadTexture("startscreen.png");
+        background = Raylib.LoadTexture("Backgrounds/startscreen.png");
         button = new((GameManager.screenWidth / 2) - 110, (GameManager.screenHeight / 2) + 40, 220, 95);
     }
 
@@ -55,7 +55,9 @@ public class StartScreen : UIscreen
     {
         base.Logic(level);
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_I))
+        {
             GameManager.ChangeUI(3);
+        }
     }
 }
 
@@ -64,7 +66,7 @@ public class GameOverScreen : UIscreen
     public GameOverScreen(Player inPlayer)
     {
         player = inPlayer;
-        background = Raylib.LoadTexture("deathscreen.png");
+        background = Raylib.LoadTexture("Backgrounds/deathscreen.png");
         button = new((GameManager.screenWidth / 2) + 175, (GameManager.screenHeight / 2) + 140, 250, 95);
     }
 
@@ -81,7 +83,7 @@ public class WinScreen : UIscreen
     public WinScreen()
     {
         button = new((GameManager.screenWidth / 2) + 175, (GameManager.screenHeight / 2) + 140, 250, 95);
-        background = Raylib.LoadTexture("winscreen.png");
+        background = Raylib.LoadTexture("Backgrounds/winscreen.png");
     }
 
     public override void Draw()

@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="*.png" CopyToOutputDirectory="Always"/>
+    <Content Include="Sprites\*.*" CopyToOutputDirectory="Always"/>
+    <Content Include="Backgrounds\*.*" CopyToOutputDirectory="Always"/>
+    <Content Include="Sounds\*.*" CopyToOutputDirectory="Always"/>
   </ItemGroup>
 
   <ItemGroup>

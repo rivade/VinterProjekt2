@@ -29,6 +29,7 @@ public class GameManager
             {
                 ChangeUI(2);
                 levelInt = 0;
+                Raylib.PlaySound(SoundController.sounds[2]);
                 currentState = State.UIscreen;
                 return levels[levelInt];
             }
@@ -52,9 +53,11 @@ public class GameManager
     public GameManager()
     {
         Raylib.InitWindow(screenWidth, screenHeight, "Jumpman 2");
-        Raylib.SetTargetFPS(60);
         Raylib.InitAudioDevice();
+        Raylib.SetTargetFPS(60);
         Raylib.SetMasterVolume(1);
+        SoundController.SoundInit();
+
         currentState = State.UIscreen;
         _player = new Player();
         _camera = new Camera(_player);
@@ -73,14 +76,6 @@ public class GameManager
         uiInt = uiSelector;
     }
 
-    private void ResetGame()
-    {
-        levelInt = 0;
-        _player.ResetCharacter(currentLevel);
-        ChangeUI(0);
-        currentState = State.UIscreen;
-    }
-
     private void GameLogic()
     {
         _camera.CameraBounds((currentLevel.layout.GetLength(1) * Level.blockWidth));
@@ -88,6 +83,7 @@ public class GameManager
         _player.CheckSpikeDeath(currentLevel);
         if (currentLevel.WinCheck(_player))
         {
+            Raylib.PlaySound(SoundController.sounds[0]);
             _player.ResetCharacter(currentLevel);
             levelInt++;
         }
@@ -104,7 +100,7 @@ public class GameManager
         Raylib.EndMode2D();
         Raylib.DrawFPS(10, 10);
         Raylib.DrawRectangle(855, 0, 153, 50, Color.GOLD);
-        Raylib.DrawText($"Level {levelInt + 1}", 880, 10, 30, Color.BLACK);
+        Raylib.DrawText($"Level {levelInt + 1}", 875, 10, 30, Color.BLACK);
         Raylib.EndDrawing();
     }
 
@@ -112,15 +108,19 @@ public class GameManager
     {
         while (!Raylib.WindowShouldClose())
         {
+            Raylib.UpdateMusicStream(SoundController.backgroundMusic);
             switch (currentState)
             {
                 case State.UIscreen:
                     currentUI.Logic(currentLevel);
                     currentUI.Draw();
+                    Raylib.PauseMusicStream(SoundController.backgroundMusic);
                     break;
+
                 case State.Game:
                     GameLogic();
                     DrawGame();
+                    Raylib.ResumeMusicStream(SoundController.backgroundMusic);
                     break;
             }
         }

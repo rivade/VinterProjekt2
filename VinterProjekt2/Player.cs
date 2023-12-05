@@ -2,6 +2,7 @@ using Raylib_cs;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Numerics;
+using System.Reflection;
 using System.Threading;
 
 public class Player
@@ -87,6 +88,7 @@ public class Player
     {
         if (l.spikes.Any(spike => Raylib.CheckCollisionRecs(playerRect, spike)))
         {
+            Raylib.PlaySound(SoundController.sounds[1]);
             GameManager.currentState = GameManager.State.UIscreen;
             GameManager.ChangeUI(1);
         }
@@ -138,7 +140,7 @@ public class Player
         wasOnWall = false;
         currentSprite = 0;
         verticalVelocity = 0;
-        playerRect.x = 0; playerRect.y = ((GameManager.screenHeight - Level.blockHeight) - playerRect.height);
+        playerRect.x = 0; playerRect.y = (GameManager.screenHeight - Level.blockHeight) - playerRect.height;
         try
         {
             l.parallaxOffset = 0;
@@ -218,10 +220,10 @@ public class Player
         ResetCharacter(null);
 
         sprites = new Texture2D[]
-        {Raylib.LoadTexture("character.png"),
-        Raylib.LoadTexture("running.png"),
-        Raylib.LoadTexture("air.png"),
-        Raylib.LoadTexture("fall.png"),
-        Raylib.LoadTexture("onwall.png")};
+        {Raylib.LoadTexture("Sprites/character.png"),
+        Raylib.LoadTexture("Sprites/running.png"),
+        Raylib.LoadTexture("Sprites/air.png"),
+        Raylib.LoadTexture("Sprites/fall.png"),
+        Raylib.LoadTexture("Sprites/onwall.png")};
     }
 }
