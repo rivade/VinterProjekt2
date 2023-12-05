@@ -62,7 +62,7 @@ public class GameManager
         _player = new Player();
         _camera = new Camera(_player);
 
-        levels = new Level[] { new LevelOne(), new LevelTwo(), new LevelThree(), new LevelFour() };
+        levels = new Level[] { new LevelOne(), new LevelTwo(), new LevelThree(), new LevelFour(), new LevelFive() };
         levelInt = 0;
 
         uiScreens = new UIscreen[] { new StartScreen(_player), new GameOverScreen(_player), new WinScreen(), new InfoScreen(_player) };

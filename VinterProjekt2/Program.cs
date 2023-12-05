@@ -1,12 +1,9 @@
-﻿namespace Jumpman
+﻿class Program
 {
-    class Program
-    {
-        static GameManager game = new();
+    static readonly GameManager jumpman = new();
 
-        static void Main(string[] args)
-        {
-            game.Run();
-        }
+    static void Main(string[] args)
+    {
+        jumpman.Run();
     }
 }

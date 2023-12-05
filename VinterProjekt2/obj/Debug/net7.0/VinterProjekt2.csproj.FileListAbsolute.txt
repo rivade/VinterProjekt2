@@ -20,11 +20,6 @@ C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\obj\Debug\net7.0\VinterProjekt2.pdb
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\obj\Debug\net7.0\VinterProjekt2.genruntimeconfig.cache
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\obj\Debug\net7.0\ref\VinterProjekt2.dll
-C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\bgmusic.mp3
-C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\jump.mp3
-C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\win.mp3
-C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\death.mp3
-C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\cheer.mp3
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\Sprites\air.png
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\Sprites\character.png
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\Sprites\fall.png
@@ -38,3 +33,8 @@ C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\Backgrounds\startscreen.png
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\Backgrounds\wall.png
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\Backgrounds\winscreen.png
+C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\Sounds\bgmusic.mp3
+C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\Sounds\cheer.mp3
+C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\Sounds\death.mp3
+C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\Sounds\jump.mp3
+C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\Sounds\win.mp3
