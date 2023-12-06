@@ -11,5 +11,6 @@ public class SoundController
         {
             Raylib.SetSoundVolume(sound, 0.5f);
         }
+        Raylib.SetMusicVolume(backgroundMusic, 1);
     }
 }

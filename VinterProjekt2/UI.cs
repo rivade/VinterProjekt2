@@ -1,5 +1,6 @@
 using Raylib_cs;
 using System.Numerics;
+using System.Linq;
 
 public class UIscreen
 {
@@ -48,6 +49,7 @@ public class StartScreen : UIscreen
         Raylib.DrawText("Jumpman 2", 300, 200, 75, Color.WHITE);
         Raylib.DrawText("START", 433, 445, 40, Color.BLACK);
         Raylib.DrawText("Press I for instructions!", 228, 550, 40, Color.RED);
+        Raylib.DrawText("Press L for level select!", 228, 600, 40, Color.RED);
         Raylib.EndDrawing();
     }
 
@@ -55,9 +57,11 @@ public class StartScreen : UIscreen
     {
         base.Logic(level);
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_I))
-        {
             GameManager.ChangeUI(3);
-        }
+
+        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_L))
+            GameManager.ChangeUI(4);
+
     }
 }
 
@@ -100,7 +104,7 @@ public class WinScreen : UIscreen
         {
             buttonColor = new(171, 171, 171, 255);
             if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
-            {   
+            {
                 GameManager.ChangeUI(0);
             }
         }
@@ -109,6 +113,17 @@ public class WinScreen : UIscreen
 
 public class InfoScreen : UIscreen
 {
+    private string[] textMessages = {
+        "Use A/D or left/right arrow keys to move",
+        "Press SPACE or Up arrow key to jump",
+        "You can jump when moving against walls,",
+        "but you have to keep pushing into them!",
+        "Avoid the spikes as they kill you!",
+        "Get to the portal at the end to win.",
+        "Press M at any time to return to menu!",
+    };
+    private const int lineHeight = 40;
+
     public InfoScreen(Player inPlayer)
     {
         player = inPlayer;
@@ -119,14 +134,70 @@ public class InfoScreen : UIscreen
     {
         Raylib.BeginDrawing();
         Raylib.ClearBackground(Color.BLUE);
-        Raylib.DrawText("Use A/D or left/right arrow keys to move", 65, 180, 40, Color.BLACK);
-        Raylib.DrawText("Press SPACE or Up arrow key to jump", 105, 220, 40, Color.BLACK);
-        Raylib.DrawText("You can jump when moving against walls,", 95, 260, 40, Color.BLACK);
-        Raylib.DrawText("but you have to keep pushing into them!", 90, 300, 40, Color.BLACK);
-        Raylib.DrawText("Avoid the spikes as they kill you!", 130, 340, 40, Color.BLACK);
-        Raylib.DrawText("Get to the portal at the end to win.", 105, 380, 40, Color.BLACK);
+        for (int i = 0; i < textMessages.Length; i++)
+        {
+            int textWidth = Raylib.MeasureText(textMessages[i], 40);
+            int startX = (GameManager.screenWidth - textWidth) / 2;
+
+            Raylib.DrawText(textMessages[i], startX, 100 + i * lineHeight, 40, Color.BLACK);
+        }
         Raylib.DrawRectangleRec(button, buttonColor);
         Raylib.DrawText("START", 433, 545, 40, Color.BLACK);
+        Raylib.EndDrawing();
+    }
+}
+
+public class LevelSelector : UIscreen
+{
+    private List<Rectangle> buttons = new();
+    const int buttonWidth = 250;
+    const int buttonHeight = 100;
+    const int buttonPadding = 20;
+    const int centeringOffset = 150;
+
+    public LevelSelector(Player inPlayer)
+    {
+        player = inPlayer;
+
+        for (int y = 1; y < 3; y++)
+        {
+            for (int x = 1; x < 4; x++)
+            {
+                int buttonX = x * (buttonWidth + buttonPadding) - centeringOffset;
+                int buttonY = y * (buttonHeight + buttonPadding) + centeringOffset;
+                buttons.Add(new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight));
+            }
+        }
+    }
+
+    public override void Logic(Level level)
+    {
+        Vector2 mouse = Raylib.GetMousePosition();
+
+        for (int index = 0; index < buttons.Count; index++)
+        {
+            Rectangle button = buttons[index];
+
+            if (Raylib.CheckCollisionPointRec(mouse, button) && Raylib.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
+            {
+                player.ResetCharacter(level);
+                GameManager.ChangeLevel(index);
+                GameManager.currentState = GameManager.State.Game;
+            }
+        }
+    }
+
+    public override void Draw()
+    {
+        Raylib.BeginDrawing();
+        Raylib.ClearBackground(Color.BLUE);
+        for (int index = 0; index < buttons.Count; index++)
+        {
+            Rectangle button = buttons[index];
+
+            Raylib.DrawRectangleRec(button, Color.GRAY);
+            Raylib.DrawText($"Level {index + 1}", (int)button.x + 35, (int)button.y + 28, 50, Color.BLACK);
+        }
         Raylib.EndDrawing();
     }
 }

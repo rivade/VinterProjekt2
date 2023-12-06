@@ -25,10 +25,10 @@ public class GameManager
             {
                 return levels[levelInt];
             }
-            catch (IndexOutOfRangeException) //Spelaren har vunnit. Blir IndexOutOfRangeException eftersom levelint i detta fall blir större än levels-arrayens längd.
+            catch (IndexOutOfRangeException) //Spelaren har vunnit. Blir IndexOutOfRangeException eftersom levelint i detta fall blir större än levels-arrayens längd. (jag behövde en try catch i mitt spel för kunskapskrav okej)
             {
                 ChangeUI(2);
-                levelInt = 0;
+                ChangeLevel(0);
                 Raylib.PlaySound(SoundController.sounds[2]);
                 currentState = State.UIscreen;
                 return levels[levelInt];
@@ -36,7 +36,7 @@ public class GameManager
         }
     }
     private Level[] levels;
-    private int levelInt;
+    public static int levelInt;
 
     private UIscreen currentUI
     {
@@ -62,30 +62,36 @@ public class GameManager
         _player = new Player();
         _camera = new Camera(_player);
 
-        levels = new Level[] { new LevelOne(), new LevelTwo(), new LevelThree(), new LevelFour(), new LevelFive() };
+        levels = new Level[] { new LevelOne(), new LevelTwo(), new LevelThree(), new LevelFour(), new LevelFive(), new LevelSix() };
         levelInt = 0;
 
-        uiScreens = new UIscreen[] { new StartScreen(_player), new GameOverScreen(_player), new WinScreen(), new InfoScreen(_player) };
+        uiScreens = new UIscreen[] { new StartScreen(_player), new GameOverScreen(_player), new WinScreen(), new InfoScreen(_player), new LevelSelector(_player) };
         uiInt = 0;
 
         _camera.InitializeCamera();
     }
 
-    public static void ChangeUI(int uiSelector)
+    public static void ChangeUI(int uiSelection)
     {
-        uiInt = uiSelector;
+        uiInt = uiSelection;
+    }
+
+    public static void ChangeLevel(int levelSelection)
+    {
+        levelInt = levelSelection;
     }
 
     private void GameLogic()
     {
-        _camera.CameraBounds((currentLevel.layout.GetLength(1) * Level.blockWidth));
+        _camera.CameraBounds(currentLevel.layout.GetLength(1) * Level.blockWidth);
         _player.Movement(currentLevel);
         _player.CheckSpikeDeath(currentLevel);
         if (currentLevel.WinCheck(_player))
         {
-            Raylib.PlaySound(SoundController.sounds[0]);
+            if (levelInt != (levels.Length - 1))
+                Raylib.PlaySound(SoundController.sounds[0]);
             _player.ResetCharacter(currentLevel);
-            levelInt++;
+            ChangeLevel(levelInt + 1);
         }
     }
 
@@ -109,6 +115,13 @@ public class GameManager
         while (!Raylib.WindowShouldClose())
         {
             Raylib.UpdateMusicStream(SoundController.backgroundMusic);
+
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_M))
+            {
+                ChangeUI(0);
+                currentState = State.UIscreen;
+            }
+
             switch (currentState)
             {
                 case State.UIscreen:
