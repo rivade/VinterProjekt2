@@ -38,3 +38,4 @@ C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\Sounds\death.mp3
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\Sounds\jump.mp3
 C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\Sounds\win.mp3
+C:\Users\theo.lindqvist\Documents\NTI Programmering\VinterProjekt2\VinterProjekt2\bin\Debug\net7.0\Sprites\titletext.png
