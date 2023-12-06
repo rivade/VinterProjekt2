@@ -19,6 +19,7 @@ public class UIscreen
             buttonColor = new(171, 171, 171, 255);
             if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
             {
+                Raylib.PlayMusicStream(SoundController.backgroundMusic);
                 player.ResetCharacter(level);
                 GameManager.currentState = GameManager.State.Game;
             }
@@ -77,6 +78,7 @@ public class GameOverScreen : UIscreen
     public override void Draw()
     {
         base.Draw();
+        Raylib.DrawText("You died!", 640, 300, 75, Color.RED);
         Raylib.DrawText("Restart", (int)(button.x + 27), (int)(button.y + 25), 50, Color.BLACK);
         Raylib.EndDrawing();
     }
@@ -122,7 +124,7 @@ public class InfoScreen : UIscreen
         "Get to the portal at the end to win.",
         "Press M at any time to return to menu!",
     };
-    private const int lineHeight = 40;
+    private readonly int lineHeight = 40;
 
     public InfoScreen(Player inPlayer)
     {
@@ -182,6 +184,7 @@ public class LevelSelector : UIscreen
             {
                 player.ResetCharacter(level);
                 GameManager.ChangeLevel(index);
+                Raylib.PlayMusicStream(SoundController.backgroundMusic);
                 GameManager.currentState = GameManager.State.Game;
             }
         }
