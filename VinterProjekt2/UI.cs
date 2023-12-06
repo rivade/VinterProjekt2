@@ -117,13 +117,14 @@ public class WinScreen : UIscreen
 {
     public WinScreen()
     {
-        button = new((GameManager.screenWidth / 2) + 175, (GameManager.screenHeight / 2) + 140, 250, 95);
+        button = new((GameManager.screenWidth / 2) + 100, (GameManager.screenHeight / 2) + 140, 250, 95);
         background = Raylib.LoadTexture("Backgrounds/winscreen.png");
     }
 
     public override void Draw()
     {
         base.Draw();
+        Raylib.DrawText("You win!", 560, 300, 90, Color.GOLD);
         Raylib.DrawText("Menu", (int)(button.x + 60), (int)(button.y + 25), 50, Color.BLACK);
         Raylib.EndDrawing();
     }
