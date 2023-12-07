@@ -156,8 +156,9 @@ public class InfoScreen : UIscreen
             "You can jump when moving against walls,",
             "but you have to keep pushing into them!",
             "Avoid the spikes as they kill you!",
-            "Get to the portal at the end to win.",
+            "Get to the portal at the end to win",
             "Press M at any time to return to menu!",
+            "(HINT) this game has coyotetime"
         };
     }
 
@@ -165,7 +166,7 @@ public class InfoScreen : UIscreen
     {
         Raylib.BeginDrawing();
         Raylib.ClearBackground(Color.BLUE);
-        DrawCenteredText(200, Color.BLACK);
+        DrawCenteredText(150, Color.BLACK);
         Raylib.DrawRectangleRec(button, buttonColor);
         Raylib.DrawText("START", 433, 545, 40, Color.BLACK);
         Raylib.EndDrawing();
