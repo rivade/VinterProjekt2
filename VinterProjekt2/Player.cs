@@ -61,23 +61,25 @@ public class Player
 
             playerBlockX = (int)((playerRect.x + (playerRect.width * offset)) / Level.blockWidth); //Avgör plats för koll av kollision relativt till vilken fot den ska kolla
 
-            int blockType = l.layout[playerBlockY, playerBlockX]; //Kollar vilket block som är under spelaren
-
-            switch (blockType)
+            if (playerBlockX >= 0 && playerBlockX < l.layout.GetLength(1) && playerBlockY >= 0 && playerBlockY < l.layout.GetLength(0)) //Förhindrar den från att kolla block utanför kartan
             {
-                case 0:
-                    isGrounded = false; //Spelaren är i luften (0 i matrisen betyder luft)
-                    break;
-                case 3:
-                    return; //Spelaren är på en tagg, annan kod ska köras, så att den kan sluta köra metoden
-                case 4:
-                    return; //Samma som ovan fast med portalen
-                default: //Spelaren är antingen på mark eller på ett väggblock
-                    isGrounded = true;
-                    canJump = true;
-                    playerRect.y = playerBlockY * Level.blockHeight - playerRect.height; //Gör så att spelaren inte fastnar i ett block (Återställer Y-position)
-                    break;
+                int blockType = l.layout[playerBlockY, playerBlockX]; //Kollar vilket block som är under spelaren
 
+                switch (blockType)
+                {
+                    case 0:
+                        isGrounded = false;
+                        break;
+                    case 3:
+                        return;
+                    case 4:
+                        return;
+                    default:
+                        isGrounded = true;
+                        canJump = true;
+                        playerRect.y = playerBlockY * Level.blockHeight - playerRect.height;
+                        break;
+                }
             }
         }
     }
@@ -137,7 +139,7 @@ public class Player
     }
 
     // Återställer spelarvariablerna till defaultvärden
-    public void ResetCharacter(Level l) 
+    public void ResetCharacter(Level l)
     {
         direction = 1;
         isGrounded = false;
@@ -160,7 +162,7 @@ public class Player
 
 
     //Drawing
-    private Texture2D[] sprites; 
+    private Texture2D[] sprites;
     public int CurrentSprite { get; set; } //Int för spelarens sprite som ska användas
     private Texture2D Sprite
     {
