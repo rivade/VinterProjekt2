@@ -14,24 +14,24 @@ public class CoyoteTimer
         lockObject = new();
     }
 
-    public void StartTimer()
+    public void StartTimer() //Den metod som startar coyotetimern
     {
-        lock (lockObject) //Låser koden till endast det aktiva objektet
+        lock (lockObject) //Låser koden till endast det ett aktivt objekt
         {
             if (!isTimerActive) //Startar bara ny tråd om en timer inte redan är aktiv
             {
-                isTimerActive = true;
-                Thread timerThread = new Thread(TimerFunction);
-                timerThread.Start();
+                isTimerActive = true; //Timern är nu aktiv
+                Thread timerThread = new Thread(TimerFunction); //Skapar en ny tråd med timerfunktionen
+                timerThread.Start(); //Startar tråden
             }
         }
     }
 
     private void TimerFunction()
     {
-        player.canJump = true;
-        Thread.Sleep(150);
-        player.canJump = false;
+        player.canJump = true; //Spelaren kan hoppa i luften
+        Thread.Sleep(150);  //Väntar 150 millisekunder
+        player.canJump = false; //Spelaren kan inte längre hoppa
 
         lock (lockObject)
         {

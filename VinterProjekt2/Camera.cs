@@ -4,41 +4,51 @@ using System.Numerics;
 
 public class Camera
 {
-    Player player;
+    Player player; //Referens till spelaren som kameran ska följa
 
-    const int playerCameraOffset = 250;
-    const int playerMaxDistanceToLvlEnd = GameManager.screenWidth - playerCameraOffset;
+    // Konstanter som används för att definiera kamerans beteende
+    const int playerCameraOffset = 250; // Det avstånd som kameran ska ha från spelaren när den trackar spelaren
+    const int playerMaxDistanceToLvlEnd = GameManager.screenWidth - playerCameraOffset; //Max tillåtna avstånd för spelaren till levelns slut (Används för att avgöra om kameran ska följa spelaren)
 
-    public bool isTrackingPlayer;
+    public bool isTrackingPlayer; // En bool som indikerar om kameran för närvarande följer spelaren
 
+    public Camera2D c = new(); // Skapar kameraobjektet
+
+    // Konstruktor för kameran, tar emot gamemanagerns instans av spelaren
     public Camera(Player inPlayer)
     {
         player = inPlayer;
     }
-    public Camera2D c = new();
+
+    // Metod för att initialisera kamerans inställningar
     public void InitializeCamera()
     {
         c.zoom = 1;
-        c.offset = new Vector2(GameManager.screenWidth / 2, GameManager.screenHeight / 2);
+        c.offset = new Vector2(GameManager.screenWidth / 2, GameManager.screenHeight / 2); //Centrerar kameran
     }
-    public void CameraBounds(int levelWidth) //Gör så att kameran bara följer efter spelaren efter den passerat en viss punkt vilket gör det snyggare
+
+    // Metod för att definiera begränsningar för kamerans rörelse baserat på spelarens position och nivåns bredd
+    public void CameraBounds(int levelWidth)
     {
+        // Om spelaren har passerat en viss punkt och avståndet till slutet av nivån är tillräckligt stort
         if (player.playerRect.x >= 265 && (levelWidth - player.playerRect.x >= playerMaxDistanceToLvlEnd))
         {
-            isTrackingPlayer = true;
-            c.target = new Vector2((player.playerRect.x + playerCameraOffset), (GameManager.screenHeight / 2));
+            isTrackingPlayer = true; // Kameran följer spelaren
+            c.target = new Vector2((player.playerRect.x + playerCameraOffset), (GameManager.screenHeight / 2)); // Kamerans position sätts relativt till spelarens position
         }
 
+        // Om avståndet till slutet av nivån är mindre än eller lika med det tillåtna avståndet
         else if (levelWidth - player.playerRect.x <= playerMaxDistanceToLvlEnd)
         {
-            isTrackingPlayer = false;
-            c.target = new Vector2((levelWidth - (GameManager.screenWidth / 2)), GameManager.screenHeight / 2);
+            isTrackingPlayer = false; // Kameran följer inte sprlaren
+            c.target = new Vector2((levelWidth - (GameManager.screenWidth / 2)), GameManager.screenHeight / 2); // Kamerans position sätts till slutet av nivån
         }
 
+        // Om ingen av ovanstående villkor uppfylls (spelaren är i början av banan)
         else
         {
-            isTrackingPlayer = false;
-            c.target = new Vector2((GameManager.screenWidth / 2), (GameManager.screenHeight / 2));
+            isTrackingPlayer = false; // Kameran följer inte spelaren
+            c.target = new Vector2((GameManager.screenWidth / 2), (GameManager.screenHeight / 2)); // Kamerans position är i mitten av skärmen vid banans början
         }
     }
 }

@@ -1,9 +1,2 @@
-﻿class Program
-{
-    static readonly GameManager jumpman2 = new();
-
-    static void Main(string[] args)
-    {
-        jumpman2.Run();
-    }
-}
+﻿GameManager jumpman2 = new(); //Skapar en instans av spelet
+jumpman2.Run();
