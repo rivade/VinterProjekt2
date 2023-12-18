@@ -1,6 +1,6 @@
 using Raylib_cs;
 
-public class AnimationController //Hanterar ett objekts
+public class AnimationController //Hanterar ett objekts animationer
 {
     private readonly float frameDuration; //Hur länge varje del av spritesheeten ska visas
     private readonly int totalFrames; //Säger hur många frames spritesheeten har
@@ -14,7 +14,7 @@ public class AnimationController //Hanterar ett objekts
 
         if (elapsed >= frameDuration) //När timern nått tiden till att framen ska bytas
         {
-            frame++; //Går framen vidare till nästa
+            frame++; //Går vidare till nästa del av spritesheeten
             elapsed -= frameDuration; //Timern återställs
         }
 

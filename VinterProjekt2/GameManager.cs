@@ -86,7 +86,7 @@ public class GameManager
 
     private void GameLogic() //Hanterar all spellogik.
     {
-        _camera.CameraBounds(currentLevel.layout.GetLength(1) * Level.blockWidth);
+        _camera.CameraBounds(currentLevel.layout.GetLength(1) * Level.blockWidth); //Getlength * blockwidth i detta fall ger bredden på banan
         _player.Movement(currentLevel);
         _player.CheckSpikeDeath(currentLevel);
         if (currentLevel.WinCheck(_player))
